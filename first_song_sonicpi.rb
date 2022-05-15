@@ -1,13 +1,15 @@
-/
-1.times do
-  with_fx :flanger, feedback: 1 do
-    garzul_feed = sample :loop_garzul, cutoff: 100, cutoff_slide: 4
-    control garzul_feed, cutoff: 60
+define :backwards_bass do
+  1.times do
+    with_fx :flanger, feedback: 1 do
+      garzul_feed = sample :loop_garzul, cutoff: 100, cutoff_slide: 4
+      control garzul_feed, cutoff: 60
+    end
+    sleep (sample_duration :loop_garzul) + 1.05
   end
-  sleep (sample_duration :loop_garzul) + 1.05
 end
-/
 
+
+/
 live_loop :slowbass do
   with_fx :flanger, feedback: 0 do
     garzul = sample :loop_garzul, cutoff: 110, cutoff_slide: 2
@@ -17,7 +19,7 @@ live_loop :slowbass do
   play (ring :e1, :d1).tick, release: 8, cutoff: (ring 70, 80, 80, 90, 70).look
   sleep 8
 end
-
+/
 
 
 /
@@ -97,16 +99,8 @@ define :hihat16 do
   
 end
 
-
-
 /
 live_loop :bass do
-
-  1.times do
-
-    onbeat_bass
-
-  end
 
   3.times do
 
@@ -119,8 +113,6 @@ live_loop :bass do
   end
 end
 /
-
-
 /
 live_loop :hihat do
   hihat16
@@ -129,9 +121,30 @@ end
 
 /MAIN ARRANGEMENT ----------------------------------------/
 
-
-
-
-
+/
+onbeatbass
+bass1
+bass2
+(NEED TRANSITION)
+backwards bass
+slow bass
+melody
+/
+define :main do
+  
+  2.times do
+    onbeat_bass
+  end
+  2.times do
+    3.times do
+      bass1
+    end
+    1.times do
+      bass2
+    end
+  end
+  backwards_bass
+end
 /---------------------------------------------------------/
 
+main
