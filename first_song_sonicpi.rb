@@ -61,34 +61,31 @@ define :glitch_loop_rise do
   with_fx :krush do
     4.times do
       sample :glitch_perc3, rpitch: 0
-      sleep 0.8
-    end
-    4.times do
-      sample :glitch_perc3, rpitch: 1
-      sleep 0.7
-    end
-    6.times do
-      sample :glitch_perc3, rpitch: 2
       sleep 0.6
     end
     6.times do
-      sample :glitch_perc3, rpitch: 3
-      sleep 0.5
+      sample :glitch_perc3, rpitch: 2
+      sleep 0.4
+    end
+    6.times do
+      sample :glitch_perc3, rpitch: 2
+      sleep 0.3
     end
     6.times do
       sample :glitch_perc3, rpitch: 4
-      sleep 0.4
+      sleep 0.225
     end
-    16.times do
+    8.times do
       sample :glitch_perc3, rpitch: 5
       sleep 0.2
     end
     sample :gl
   end
+  
+  
 end
 
 
-/Slow growling bass and drums on top/
 define :slowbass do
   with_fx :flanger, feedback: 0 do
     garzul = sample :loop_garzul, cutoff: 110, cutoff_slide: 2
@@ -100,7 +97,7 @@ define :slowbass do
 end
 
 
-/Plucking melody -- ring of notes with echo/
+
 define :melody do
   use_synth :pluck
   use_synth_defaults sustain: 0, release: 2, release_slide: 0.5, amp: 0.5
@@ -118,7 +115,6 @@ end
 
 / Bass Arrays and functions /
 
-/Basic bass onbeat/
 define :onbeat_bass do
   #4 beats
   8.times do
@@ -128,7 +124,6 @@ define :onbeat_bass do
 end
 
 
-/Beat Patterns for the bass and snares           /
 /              1 + 2 + 3 + 4 + 1 + 2 + 3 + 4 +   /
 bass1_beat =  [1,0,1,0,1,0,1,0,1,0,0,1,0,0,1,0]
 snare_beat =  [1,0,0,0,0,0,1,0,0,0,0,0,0,1,0,0]
@@ -164,6 +159,7 @@ define :bass2 do
   end
 end
 
+
 define :hihat16 do
   #16.25 beats total
   #8 beats
@@ -178,32 +174,35 @@ define :hihat16 do
     sample :drum_cymbal_closed, release: 0.1, sustain: 0, amp: 0.75
     sleep sleep_times.tick
   end
+  
 end
 
-/
-------------------MAIN ARRANGEMENT------------------
+/MAIN ARRANGEMENT ----------------------------------------/
 
+/
 onbeatbass
 bass1
 bass2
-glitch_loop_rise (NEED MELODY OR SOMETHING ON TOP)
-die_out
+(NEED TRANSITION)
 backwards bass
 slow bass
-melody (staggered and layered over slow bass)
+melody
 /
 
-define :main do
-  /
+
+define :drumline1 do
+  # TOTAL: 22.25 beats
+  #8 beats
   2.times do
     onbeat_bass
   end
   in_thread do
-    2.times do
+    1.times do
       hihat16
     end
   end
-
+  
+  #16.25 beats
   1.times do
     3.times do
       bass1
@@ -212,22 +211,41 @@ define :main do
       bass2
     end
   end
-/
+end
+
+define :main do
+  
+  drumline1
+  
   
   /glitch_transition/
+  /
+  in_thread do
+
+    glitch_loop_rise
+  end
+  4.times do
+
+    onbeat_bass
+  end
+  /
   
-  glitch_loop_rise
   
+  
+  /
   die_out
+  /
   
   /flanger_bass/
-  
   /4.times do
 
     slowbass
   end/
   
+  
 end
+
+
 /---------------------------------------------------------/
 
 main
